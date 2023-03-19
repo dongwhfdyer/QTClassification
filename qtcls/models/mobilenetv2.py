@@ -9,8 +9,6 @@ from torchvision.models._utils import _make_divisible
 from torchvision.ops.misc import ConvNormActivation
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = ["MobileNetV2", "mobilenet_v2"]
 
 model_urls = {
@@ -207,5 +205,5 @@ def mobilenet_v2(pretrained: bool = False, progress: bool = True, **kwargs: Any)
     model = MobileNetV2(**kwargs)
     if pretrained:
         state_dict = load_state_dict_from_url(model_urls["mobilenet_v2"], progress=progress)
-        checkpoint_loader(model, state_dict)
+        model.load_state_dict(state_dict)
     return model

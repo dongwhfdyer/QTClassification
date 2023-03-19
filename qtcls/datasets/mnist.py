@@ -14,8 +14,8 @@ import torch
 from PIL import Image
 from torchvision.datasets.utils import download_and_extract_archive, check_integrity
 
-from utils.decorators import main_process_only
 from ._base_ import BaseDataset
+from ..utils.decorators import main_process_only
 
 __all__ = ['MNIST']
 

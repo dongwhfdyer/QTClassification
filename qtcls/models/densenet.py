@@ -10,8 +10,6 @@ from torch import Tensor
 from torch.hub import load_state_dict_from_url
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = ["DenseNet", "densenet121", "densenet169", "densenet201", "densenet161"]
 
 model_urls = {
@@ -237,7 +235,7 @@ def _load_state_dict(model: nn.Module, model_url: str, progress: bool) -> None:
             new_key = res.group(1) + res.group(2)
             state_dict[new_key] = state_dict[key]
             del state_dict[key]
-    checkpoint_loader(model, state_dict)
+    model.load_state_dict(state_dict)
 
 
 def _densenet(

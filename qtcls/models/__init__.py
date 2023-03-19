@@ -3,9 +3,6 @@
 import torch
 from torch.hub import load_state_dict_from_url
 
-import datasets
-from utils.io import checkpoint_loader
-from utils.misc import is_main_process
 from ._pretrain_ import model_local_paths, model_urls
 from .alexnet import *
 from .convnext import *
@@ -22,6 +19,9 @@ from .shufflenetv2 import *
 from .squeezenet import *
 from .vgg import *
 from .vision_transformer import *
+from .. import datasets
+from ..utils.io import checkpoint_loader
+from ..utils.misc import is_main_process
 
 __vars__ = vars()
 

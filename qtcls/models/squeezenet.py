@@ -6,8 +6,6 @@ import torch.nn.init as init
 from torch.hub import load_state_dict_from_url
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = ["SqueezeNet", "squeezenet1_0", "squeezenet1_1"]
 
 model_urls = {
@@ -103,7 +101,7 @@ def _squeezenet(version: str, pretrained: bool, progress: bool, **kwargs: Any) -
     if pretrained:
         arch = "squeezenet" + version
         state_dict = load_state_dict_from_url(model_urls[arch], progress=progress)
-        checkpoint_loader(model, state_dict)
+        model.load_state_dict(state_dict)
     return model
 
 

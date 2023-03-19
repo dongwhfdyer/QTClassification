@@ -5,8 +5,6 @@ import torch.nn as nn
 from torch.hub import load_state_dict_from_url
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = [
     "VGG",
     "vgg11",
@@ -100,7 +98,7 @@ def _vgg(arch: str, cfg: str, batch_norm: bool, pretrained: bool, progress: bool
     model = VGG(make_layers(cfgs[cfg], batch_norm=batch_norm), **kwargs)
     if pretrained:
         state_dict = load_state_dict_from_url(model_urls[arch], progress=progress)
-        checkpoint_loader(model, state_dict)
+        model.load_state_dict(state_dict)
     return model
 
 

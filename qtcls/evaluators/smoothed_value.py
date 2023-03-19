@@ -3,7 +3,7 @@ from collections import deque
 import torch
 from torch import distributed as dist
 
-from utils.misc import is_dist_avail_and_initialized
+from ..utils.misc import is_dist_avail_and_initialized
 
 __all__ = ['SmoothedValue']
 

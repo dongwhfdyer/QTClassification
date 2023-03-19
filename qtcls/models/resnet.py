@@ -6,8 +6,6 @@ from torch import Tensor
 from torch.hub import load_state_dict_from_url
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = [
     "ResNet",
     "resnet18",
@@ -293,7 +291,7 @@ def _resnet(
     model = ResNet(block, layers, **kwargs)
     if pretrained:
         state_dict = load_state_dict_from_url(model_urls[arch], progress=progress)
-        checkpoint_loader(model, state_dict)
+        model.load_state_dict(state_dict)
     return model
 
 

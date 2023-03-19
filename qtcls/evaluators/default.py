@@ -4,7 +4,7 @@ import itertools
 
 from sklearn import metrics as sklearn_metrics
 
-from utils.misc import all_gather
+from ..utils.misc import all_gather
 
 
 class DefaultEvaluator:

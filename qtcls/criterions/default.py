@@ -2,8 +2,8 @@
 
 import torch.nn.functional as F
 
-from utils.misc import accuracy
 from ._base_ import BaseCriterion
+from ..utils.misc import accuracy
 
 
 class DefaultCriterion(BaseCriterion):

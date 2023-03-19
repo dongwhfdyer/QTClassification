@@ -9,8 +9,6 @@ from torchvision.ops import StochasticDepth
 from torchvision.ops.misc import ConvNormActivation
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = [
     "ConvNeXt",
     "convnext_tiny",
@@ -198,7 +196,7 @@ def _convnext(
         if arch not in _MODELS_URLS:
             raise ValueError(f"No checkpoint is available for model type {arch}")
         state_dict = load_state_dict_from_url(_MODELS_URLS[arch], progress=progress)
-        checkpoint_loader(model, state_dict)
+        model.load_state_dict(state_dict)
     return model
 
 

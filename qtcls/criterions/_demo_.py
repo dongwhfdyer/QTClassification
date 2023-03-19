@@ -3,8 +3,8 @@
 import torch
 import torch.nn.functional as F
 
-from criterions._base_ import BaseCriterion
-from utils.misc import accuracy
+from qtcls.criterions._base_ import BaseCriterion
+from qtcls.utils.misc import accuracy
 
 __all__ = []
 

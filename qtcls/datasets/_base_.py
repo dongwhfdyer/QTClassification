@@ -4,7 +4,7 @@ import os.path
 
 from torch.utils.data import Dataset
 
-from utils.io import pil_loader
+from ..utils.io import pil_loader
 
 __all__ = ["BaseDataset"]
 

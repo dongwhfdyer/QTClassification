@@ -6,8 +6,8 @@ from typing import Iterable
 
 import torch
 
-from evaluators import build_evaluator, MetricLogger, SmoothedValue
-from utils.misc import update, reduce_dict
+from qtcls.evaluators import build_evaluator, MetricLogger, SmoothedValue
+from qtcls.utils.misc import update, reduce_dict
 
 
 def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,

@@ -8,7 +8,7 @@ import torch
 import ujson as json
 from PIL import Image
 
-from utils.misc import is_main_process, has_param
+from .misc import is_main_process, has_param
 
 
 def pil_loader(path, format=None):

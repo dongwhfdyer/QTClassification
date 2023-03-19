@@ -2,6 +2,7 @@
 
 import argparse
 import datetime
+import json
 import os
 import time
 from pathlib import Path
@@ -10,19 +11,14 @@ import torch
 import torch.distributed as dist
 import torch.utils.data as Data
 
-from criterions import build_criterion
-from datasets import build_dataset
 from engine import evaluate, train_one_epoch
-from models import build_model
-from optimizers import build_optimizer
-from schedulers import build_scheduler
-from utils.io import checkpoint_saver, checkpoint_loader
-from utils.misc import makedirs, init_distributed_mode, init_seeds, is_main_process
-
-try:
-    import ujson as json
-except:
-    import json
+from qtcls.criterions import build_criterion
+from qtcls.datasets import build_dataset
+from qtcls.models import build_model
+from qtcls.optimizers import build_optimizer
+from qtcls.schedulers import build_scheduler
+from qtcls.utils.io import checkpoint_saver, checkpoint_loader
+from qtcls.utils.misc import makedirs, init_distributed_mode, init_seeds, is_main_process
 
 
 def get_args_parser():

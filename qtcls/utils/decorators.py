@@ -2,7 +2,7 @@
 
 import torch.distributed as dist
 
-from utils.misc import is_main_process, is_dist_avail_and_initialized
+from .misc import is_main_process, is_dist_avail_and_initialized
 
 
 def getattr_case_insensitive(func):

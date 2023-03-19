@@ -6,8 +6,6 @@ from torch import Tensor
 from torch.hub import load_state_dict_from_url
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = ["ShuffleNetV2", "shufflenet_v2_x0_5", "shufflenet_v2_x1_0", "shufflenet_v2_x1_5", "shufflenet_v2_x2_0"]
 
 model_urls = {
@@ -165,7 +163,7 @@ def _shufflenetv2(arch: str, pretrained: bool, progress: bool, *args: Any, **kwa
             raise ValueError(f"No checkpoint is available for model type {arch}")
         else:
             state_dict = load_state_dict_from_url(model_url, progress=progress)
-            checkpoint_loader(model, state_dict)
+            model.load_state_dict(state_dict)
 
     return model
 

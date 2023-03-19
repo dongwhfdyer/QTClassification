@@ -9,8 +9,6 @@ from torch import Tensor
 from torch.hub import load_state_dict_from_url
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = ["GoogLeNet", "googlenet", "GoogLeNetOutputs", "_GoogLeNetOutputs"]
 
 model_urls = {
@@ -301,7 +299,7 @@ def googlenet(pretrained: bool = False, progress: bool = True, **kwargs: Any) ->
         kwargs["init_weights"] = False
         model = GoogLeNet(**kwargs)
         state_dict = load_state_dict_from_url(model_urls["googlenet"], progress=progress)
-        checkpoint_loader(model, state_dict)
+        model.load_state_dict(state_dict)
         if not original_aux_logits:
             model.aux_logits = False
             model.aux1 = None  # type: ignore[assignment]

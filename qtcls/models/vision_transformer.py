@@ -9,8 +9,6 @@ from torch.hub import load_state_dict_from_url
 from torchvision.ops.misc import ConvNormActivation
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = [
     "VisionTransformer",
     "vit_b_16",
@@ -301,7 +299,7 @@ def _vision_transformer(
         if arch not in model_urls:
             raise ValueError(f"No checkpoint is available for model type '{arch}'!")
         state_dict = load_state_dict_from_url(model_urls[arch], progress=progress)
-        checkpoint_loader(model, state_dict)
+        model.load_state_dict(state_dict)
 
     return model
 

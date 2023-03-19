@@ -11,8 +11,6 @@ from torchvision.ops import StochasticDepth
 from torchvision.ops.misc import ConvNormActivation, SqueezeExcitation
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = [
     "EfficientNet",
     "efficientnet_b0",
@@ -290,7 +288,7 @@ def _efficientnet(
         if model_urls.get(arch, None) is None:
             raise ValueError(f"No checkpoint is available for model type {arch}")
         state_dict = load_state_dict_from_url(model_urls[arch], progress=progress)
-        checkpoint_loader(model, state_dict)
+        model.load_state_dict(state_dict)
     return model
 
 

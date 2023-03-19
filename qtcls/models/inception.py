@@ -8,8 +8,6 @@ from torch import nn, Tensor
 from torch.hub import load_state_dict_from_url
 from torchvision.utils import _log_api_usage_once
 
-from utils.io import checkpoint_loader
-
 __all__ = ["Inception3", "inception_v3", "InceptionOutputs", "_InceptionOutputs"]
 
 model_urls = {
@@ -434,7 +432,7 @@ def inception_v3(pretrained: bool = False, progress: bool = True, **kwargs: Any)
         kwargs["init_weights"] = False  # we are loading weights from a pretrained model
         model = Inception3(**kwargs)
         state_dict = load_state_dict_from_url(model_urls["inception_v3_google"], progress=progress)
-        checkpoint_loader(model, state_dict)
+        model.load_state_dict(state_dict)
         if not original_aux_logits:
             model.aux_logits = False
             model.AuxLogits = None
