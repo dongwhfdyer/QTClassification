@@ -1,11 +1,11 @@
 # Copyright (c) QIU, Tian. All rights reserved.
 
+import json
 import os
 
 import cv2
 import numpy as np
 import torch
-import ujson as json
 from PIL import Image
 
 from .misc import is_main_process, has_param

@@ -1,0 +1,8 @@
+numpy
+opencv-python
+packaging
+Pillow
+scikit_learn
+scipy
+termcolor
+timm
