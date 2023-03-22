@@ -12,6 +12,7 @@ class DefaultEvaluator:
         self.metrics = metrics
         self.outputs = []
         self.targets = []
+        self.eval = {metric: None for metric in metrics}
 
     def update(self, outputs, targets):
         outputs = outputs.max(1)[1].tolist()
@@ -24,19 +25,21 @@ class DefaultEvaluator:
         self.targets = list(itertools.chain(*all_gather(self.targets)))
 
     def metric_acc(self, outputs, targets, **kwargs):
-        return sklearn_metrics.accuracy_score(targets, outputs) * 100
+        return sklearn_metrics.accuracy_score(targets, outputs)
 
     def metric_recall(self, outputs, targets, **kwargs):
-        return sklearn_metrics.recall_score(targets, outputs, average='macro') * 100
+        return sklearn_metrics.recall_score(targets, outputs, average='macro')
 
     def metric_precision(self, outputs, targets, **kwargs):
-        return sklearn_metrics.precision_score(targets, outputs, average='macro') * 100
+        return sklearn_metrics.precision_score(targets, outputs, average='macro')
 
     def metric_f1(self, outputs, targets, **kwargs):
-        return sklearn_metrics.f1_score(targets, outputs, average='macro') * 100
+        return sklearn_metrics.f1_score(targets, outputs, average='macro')
 
     def summarize(self):
         print('Classification Metrics:')
         for metric in self.metrics:
-            print("{}: {:.2f}".format(metric, getattr(self, f'metric_{metric}')(self.outputs, self.targets)), end='   ')
+            value = getattr(self, f'metric_{metric}')(self.outputs, self.targets)
+            self.eval[metric] = value
+            print("{}: {:.3f}".format(metric, value), end='    ')
         print('\n')

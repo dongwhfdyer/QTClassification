@@ -79,7 +79,7 @@ Our basic model library is based on `torchvision` (default), and also supports `
 
 ### torchvision
 
-Set the argument`--model_lib` to `torchvision` (default).
+Set the argument `--model_lib` to `torchvision` (default).
 
 Currently supported argument `--model`:
 
@@ -93,11 +93,11 @@ Currently supported argument `--model`:
 
 **DenseNet**
 
-`densenet`, `DenseNet`, `densenet121`, `densenet169`, `densenet201`, `densenet161`
+`densenet121`, `densenet169`, `densenet201`, `densenet161`
 
 **EfficientNet**
 
-`efficientnet`, `efficientnet_b0`, `efficientnet_b1`, `efficientnet_b2`, `efficientnet_b3`, `efficientnet_b4`, `efficientnet_b5`, `efficientnet_b6`, `efficientnet_b7`
+`efficientnet_b0`, `efficientnet_b1`, `efficientnet_b2`, `efficientnet_b3`, `efficientnet_b4`, `efficientnet_b5`, `efficientnet_b6`, `efficientnet_b7`
 
 **GoogleNet**
 
@@ -125,7 +125,7 @@ Currently supported argument `--model`:
 
 **ShuffleNet**
 
-`shufflenet_v2_x0_5`, `shufflenet_v2_x1_0`, `shufflenet_v2_x1_5`, `shufflenet_v2_x2_0` `squeezenet1_0`, `squeezenet1_1`
+`shufflenet_v2_x0_5`, `shufflenet_v2_x1_0`, `shufflenet_v2_x1_5`, `shufflenet_v2_x2_0`, `squeezenet1_0`, `squeezenet1_1`
 
 **VGG**
 
@@ -137,7 +137,7 @@ Currently supported argument `--model`:
 
 ### timm
 
-Set the argument`--model_lib` to `timm`.
+Set the argument `--model_lib` to `timm`.
 
 Currently supported argument `--model`:
 

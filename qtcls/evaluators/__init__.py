@@ -1,8 +1,6 @@
 # Copyright (c) QIU, Tian. All rights reserved.
 
 from .default import DefaultEvaluator
-from .metric_logger import MetricLogger
-from .smoothed_value import SmoothedValue
 
 
 def build_evaluator(args):

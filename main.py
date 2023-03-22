@@ -12,11 +12,7 @@ import torch.distributed as dist
 import torch.utils.data as Data
 
 from engine import evaluate, train_one_epoch
-from qtcls.criterions import build_criterion
-from qtcls.datasets import build_dataset
-from qtcls.models import build_model
-from qtcls.optimizers import build_optimizer
-from qtcls.schedulers import build_scheduler
+from qtcls import build_criterion, build_dataset, build_model, build_optimizer, build_scheduler
 from qtcls.utils.io import checkpoint_saver, checkpoint_loader
 from qtcls.utils.misc import makedirs, init_distributed_mode, init_seeds, is_main_process
 
@@ -42,15 +38,16 @@ def get_args_parser():
     parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
     parser.add_argument('--local_rank', type=int, default=-1)
     parser.add_argument('--print_freq', type=int, default=50)
+    parser.add_argument('--need_targets', action='store_true')
 
     # dataset
     parser.add_argument('--data_root', type=str, default='./data')
-    parser.add_argument('--dataset', type=str, default='cifar10')
+    parser.add_argument('--dataset', '-d', type=str, default='cifar10')
 
     # model
     parser.add_argument('--model_lib', default='torchvision', type=str, choices=['torchvision', 'timm'],
                         help='model library')
-    parser.add_argument('--model', default='resnet50', type=str, help='model name')
+    parser.add_argument('--model', '-m', default='resnet50', type=str, help='model name')
 
     # criterion
     parser.add_argument('--criterion', default='default', type=str, help='criterion name')
@@ -71,11 +68,11 @@ def get_args_parser():
 
     # loading weights
     parser.add_argument('--no_pretrain', action='store_true')
-    parser.add_argument('--resume', type=str, default='')
+    parser.add_argument('--resume', '-r', type=str, default='')
     parser.add_argument('--load_pos', type=str)
 
     # saving weights
-    parser.add_argument('--output_dir', type=str, default='./runs/__tmp__')
+    parser.add_argument('--output_dir', '-o', type=str, default='./runs/__tmp__')
     parser.add_argument('--save_interval', type=int, default=1)
     parser.add_argument('--save_pos', type=str)
 
@@ -92,7 +89,6 @@ def main(args):
     if args.num_workers is None:
         args.num_workers = min([os.cpu_count(), args.batch_size if args.batch_size > 1 else 0, 8])
     output_dir = Path(args.output_dir)
-    print()
 
     # ** model **
     model = build_model(args)
@@ -107,9 +103,9 @@ def main(args):
                                                           find_unused_parameters=args.find_unused_params)
         model_without_ddp = model.module
 
-    print('\n' + str(args) + '\n')
+    print(args)
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(f'number of params: {n_parameters}' + '\n')
+    print(f'number of params: {n_parameters}')
 
     # ** optimizer & scheduler **
     param_dicts = [
@@ -156,7 +152,9 @@ def main(args):
             args.start_epoch = checkpoint['epoch'] + 1
 
     if args.eval:
-        test_stats, evaluator = evaluate(model, data_loader_val, criterion, device, args, args.print_freq)
+        test_stats, evaluator = evaluate(
+            model, data_loader_val, criterion, device, args, args.print_freq
+        )
         return
 
     print('\n' + 'Start training:')
@@ -166,8 +164,9 @@ def main(args):
         if args.distributed:
             sampler_train.set_epoch(epoch)
         train_stats = train_one_epoch(
-            model, criterion, data_loader_train, optimizer, device, epoch,
-            args.clip_max_norm, args.print_freq)
+            model, criterion, data_loader_train, optimizer, device, epoch, args.clip_max_norm, args.print_freq,
+            args.need_targets
+        )
         lr_scheduler.step()
         if args.output_dir:
             checkpoint_paths = [output_dir / 'checkpoint.pth']
@@ -182,7 +181,9 @@ def main(args):
                     'args': args,
                 }, checkpoint_path)
 
-        test_stats, evaluator = evaluate(model, data_loader_val, criterion, device, args, args.print_freq)
+        test_stats, evaluator = evaluate(
+            model, data_loader_val, criterion, device, args, args.print_freq
+        )
 
         log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
                      **{f'test_{k}': v for k, v in test_stats.items()},
@@ -190,8 +191,12 @@ def main(args):
                      'n_parameters': n_parameters}
 
         if args.output_dir and is_main_process():
-            with (output_dir / 'log.txt').open('a') as f:
+            log_path = output_dir / 'log.txt'
+            log_exists = True if log_path.exists() else False
+            with log_path.open('a') as f:
                 f.write(json.dumps(log_stats) + '\n')
+            if not log_exists:
+                log_path.chmod(mode=0o777)
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
