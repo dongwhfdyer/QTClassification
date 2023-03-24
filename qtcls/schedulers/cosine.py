@@ -2,6 +2,8 @@ import math
 
 from torch.optim import lr_scheduler as lr_scheduler
 
+__all__ = ['CosineLR']
+
 
 class CosineLR(lr_scheduler.LambdaLR):
     def __init__(self, optimizer, epochs, lrf):

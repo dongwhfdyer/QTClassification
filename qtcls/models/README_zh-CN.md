@@ -1,17 +1,18 @@
-# How to register your models
+# 如何注册你的模型
 
-English | [简体中文](README_zh-CN.md)
+[English](README.md) | 简体中文
 
-1. Create `your_model.py`.
-2. In `your_model.py`, inherit `nn.Module` to define your model.
+1. 创建 `your_model.py`。
+2. 在 `your_model.py` 中，继承 `nn.Module` 来定义你的数据集。
 
 ```python
 # your_model.py
 
 from torch import nn
 
-# We recommend you to declear '__all__'.
-__all__ = ['your_model_architecture_1', 'your_model_architecture_2', 'your_model_architecture_3']  
+# 我们推荐你申明 '__all__' 变量。
+__all__ = ['your_model_architecture_1', 'your_model_architecture_2', 'your_model_architecture_3']
+
 
 class YourModel(nn.Module):
     def __init__(self, ...):
@@ -25,40 +26,42 @@ class YourModel(nn.Module):
 def your_model_architecture_1(...):
     return YourModel(...)
 
+
 def your_model_architecture_2(...):
     return YourModel(...)
+
 
 def your_model_architecture_3(...):
     return YourModel(...)
 ```
 
-3. In `__init__.py`, import all your model architectures.
+3. 在 `__init__.py` 中，导入你所有的模型架构（model architectures）。
 
 ```python
 # __init__.py
 
 ...
 
-from .your_dataset import *  # Usually used when '__all__' has been declared in your_model.py.
+from .your_dataset import *  # 通常在 '__all__' 被申明的情况下可以这么写。
 
-# When '__all__' has not been declared in your_model.py, use:
+# 当 '__all__' 在 your_model.py 中未被申明时，使用:
 # from .your_dataset import your_model_architecture_1, your_model_architecture_2, your_model_architecture_3
 
 ...
 ```
 
-4. If you have pretrained weights, add its path/url into `_pretrain_.py`. When loading pretrained
-   weights, `model_local_paths` will be searched first, and then `model_urls`.
+4. 如果你有预训练权重，把它的路径添加到 `_pretrain_.py` 中。当加载预训练权重时，会优先搜索 `model_local_paths`
+   ，而后才是 `model_urls`。
 
 ```python
-# local paths (high priority)
+# 本地路径（高优先级）
 model_local_paths = {
     "your_model_architecture_1": "/local/path/to/the/pretrained",
     "your_model_architecture_2": "/local/path/to/the/pretrained",
     "your_model_architecture_3": "/local/path/to/the/pretrained",
 }
 
-# urls (low priority)
+# 云端路径（低优先级）
 model_urls = {
     "your_model_architecture_1": "url://to/the/pretrained",
     "your_model_architecture_2": "url://to/the/pretrained",
@@ -66,4 +69,4 @@ model_urls = {
 }
 ```
 
-4. When using your model, set `--model` to `your_model_architecture_{1/2/3}`. 
+4. 当使用你的模型时，把 `--model` 赋值为你的模型架构名称 `your_model_architecture_{1/2/3}`. 

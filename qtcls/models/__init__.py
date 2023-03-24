@@ -32,7 +32,7 @@ def build_model(args):
     num_classes = datasets.num_classes[args.dataset.lower()]
     pretrained = not args.no_pretrain and is_main_process()
 
-    if model_lib == 'torchvision':
+    if model_lib == 'torchvision-ex':
         if __vars__.get(model_name):
             model = __vars__[model_name](num_classes=num_classes)
         else:

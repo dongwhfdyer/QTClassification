@@ -2,7 +2,7 @@ numpy
 opencv-python
 packaging
 Pillow
-scikit_learn
+scikit-learn
 scipy
 termcolor
 timm

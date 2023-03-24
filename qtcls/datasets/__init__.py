@@ -23,7 +23,7 @@ num_classes = {
 
 def build_dataset(args, split, download=True):
     """
-    mode: 'train', 'val', 'test' or others
+    split: 'train', 'val', 'test' or others
     """
     split = split.lower()
     dataset_name = args.dataset.lower()

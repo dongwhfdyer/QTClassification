@@ -23,7 +23,7 @@ def get_args_parser():
     # runtime
     parser.add_argument('--device', default='cuda', help='device id (i.e. 0 or 0,1 or cpu)')
     parser.add_argument('--seed', type=int, default=42)
-    parser.add_argument('--batch_size', type=int, default=8)
+    parser.add_argument('--batch_size', '-b', type=int, default=8)
     parser.add_argument('--epochs', type=int, default=100)
     parser.add_argument('--start_epoch', type=int, default=0)
     parser.add_argument('--clip_max_norm', default=0.0, type=float, help='gradient clipping max norm')
@@ -39,13 +39,14 @@ def get_args_parser():
     parser.add_argument('--local_rank', type=int, default=-1)
     parser.add_argument('--print_freq', type=int, default=50)
     parser.add_argument('--need_targets', action='store_true')
+    parser.add_argument('--drop_lr_now', action='store_true')
 
     # dataset
     parser.add_argument('--data_root', type=str, default='./data')
     parser.add_argument('--dataset', '-d', type=str, default='cifar10')
 
     # model
-    parser.add_argument('--model_lib', default='torchvision', type=str, choices=['torchvision', 'timm'],
+    parser.add_argument('--model_lib', default='torchvision-ex', type=str, choices=['torchvision-ex', 'timm'],
                         help='model library')
     parser.add_argument('--model', '-m', default='resnet50', type=str, help='model name')
 
@@ -56,12 +57,15 @@ def get_args_parser():
     parser.add_argument('--optimizer', default='default', type=str, help='optimizer name')
     parser.add_argument('--lr', type=float, default=1e-4)
     parser.add_argument('--lrf', type=float, default=0.01)
-    parser.add_argument('--lr_drop', default=40, type=int)
+    parser.add_argument('--lr_drop', default=-1, type=int)
     parser.add_argument('--momentum', default=0.9, type=float, help='sgd momentum')
     parser.add_argument('--weight_decay', default=2e-5, type=float)
 
     # lr_scheduler
     parser.add_argument('--scheduler', default='default', type=str, help='scheduler name')
+    parser.add_argument('--step_size', type=int, help='for StepLR')
+    parser.add_argument('--milestones', type=int, nargs='*', help='for MultiStepLR')
+    parser.add_argument('--gamma', default=0.1, type=float, help='for StepLR and MultiStepLR')
 
     # evaluator
     parser.add_argument('--evaluator', default='default', type=str, help='evaluator name')
@@ -77,7 +81,7 @@ def get_args_parser():
     parser.add_argument('--save_pos', type=str)
 
     # remarks
-    parser.add_argument('--remarks', type=str)
+    parser.add_argument('--note', type=str)
 
     return parser
 
@@ -151,6 +155,10 @@ def main(args):
             checkpoint_loader(lr_scheduler, checkpoint['lr_scheduler'], verbose=False)
             args.start_epoch = checkpoint['epoch'] + 1
 
+            if args.drop_lr_now:
+                for param_group in optimizer.param_groups:
+                    param_group['lr'] = param_group['lr'] * 0.1
+
     if args.eval:
         test_stats, evaluator = evaluate(
             model, data_loader_val, criterion, device, args, args.print_freq
@@ -197,6 +205,9 @@ def main(args):
                 f.write(json.dumps(log_stats) + '\n')
             if not log_exists:
                 log_path.chmod(mode=0o777)
+
+        if args.note:
+            print(f'Note: {args.note}\n')
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))

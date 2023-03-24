@@ -2,6 +2,8 @@ from _bisect import bisect_right
 
 from torch.optim import lr_scheduler as lr_scheduler
 
+__all__ = ['WarmupMultiStepLR']
+
 
 class WarmupMultiStepLR(lr_scheduler._LRScheduler):
     def __init__(

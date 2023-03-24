@@ -1,9 +1,9 @@
-# local paths
+# local paths (high priority)
 model_local_paths = {
     "your_model": "/local/path/to/the/pretrained",
 }
 
-# urls
+# urls (low priority)
 model_urls = {
     "your_model": "url://to/the/pretrained",
 

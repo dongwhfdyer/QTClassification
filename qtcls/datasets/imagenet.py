@@ -9,6 +9,8 @@ from torchvision.datasets.utils import check_integrity, extract_archive, verify_
 
 from .folder import ImageFolder
 
+__all__ = ['ImageNet']
+
 ARCHIVE_META = {
     "train": ("ILSVRC2012_img_train.tar", "1d675b47d978889d74fa0da5fadfb00e"),
     "val": ("ILSVRC2012_img_val.tar", "29b22e2961454d5413ddabcf34fc5622"),

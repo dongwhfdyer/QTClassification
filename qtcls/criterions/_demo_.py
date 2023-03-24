@@ -6,7 +6,7 @@ import torch.nn.functional as F
 from qtcls.criterions._base_ import BaseCriterion
 from qtcls.utils.misc import accuracy
 
-__all__ = []
+__all__ = ['DemoCriterion']
 
 
 class DemoCriterion(BaseCriterion):

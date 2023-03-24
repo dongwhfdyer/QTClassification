@@ -1,9 +1,9 @@
-# How to register your datasets
+# 如何注册你的数据集
 
-English | [简体中文](README_zh-CN.md)
+[English](README.md) | 简体中文
 
-1. Create `your_dataset.py`.
-2. In `your_dataset.py`, inherit `BaseDataset` to define your criterion.
+1. 创建 `your_dataset.py`。
+2. 在 `your_dataset.py` 中，继承 `BaseDataset` 来定义你的数据集。
 
 ```python
 # your_dataset.py
@@ -29,13 +29,13 @@ class YourDataset(BaseDataset):
         ...
 ```
 
-3. In `__init__.py`,
-    - Import your dataset.
-    - Add your dataset's num_classes.
-    - Register your dataset and its data transform in `build_dataset()`. Note that the transform should be
-      in `{'train': Callable, 'val': Callable, ...}` format, where the keys `'train'`, `'val'`, `...` correspond to the
-      argument `split`. For example, when building the training dataset, `split` is set to `'train'`, and
-      then `transform[split]` obtains the training data transform.
+3. 在 `__init__.py` 中，
+    - 导入你的数据集。
+    - 添加你的数据集的类别数（num_classes）。
+    - 在 `build_dataset()`
+      中注册你的数据集及其对应的数据增强方式（transform）。注意数据增强应该是 `{'train': Callable, 'val': Callable, ...}`
+      格式，其中键值 `'train'`, `'val'`, `...` 与参数 `split` 对应。例如，当创建训练集时，`split` 为 `'train'`
+      ，于是 `transform[split]` 就得到了训练集的数据增强。
 
 ```python
 # __init__.py
@@ -45,7 +45,7 @@ class YourDataset(BaseDataset):
 from .your_dataset import YourDataset
 
 num_classes = {
-    # all in lowercase !!!
+    # 全部小写 !!!
     ...
 'your_dataset': your_num_classes
 }
@@ -73,7 +73,7 @@ def build_dataset(args, split, download=True):
     ...
 ```
 
-4. When using your dataset, set `--dataset` to `your_dataset`. Note that `your_dataset` does not have to be consistent
-   with the dataset class name `YourDataset`.
-5. Put your dataset into the `--data_root` directory (default is `./data`). Please
-   follow [this instruction](../../data/README.md). 
+4. 当使用你的数据集时，把 `--dataset` 赋值为你的数据集名称 `your_dataset`。注意 `your_dataset`
+   不需要和你的数据集类名 `YourDataset` 保持一致。
+5. 把你的数据集放在 `--data_root` 目录下 (默认是 `./data` 目录下).
+   请参考[“如何摆放你的数据集”](../../data/README_zh-CN.md)。 

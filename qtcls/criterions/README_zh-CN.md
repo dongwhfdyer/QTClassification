@@ -1,12 +1,11 @@
-# How to register your criterions
+# 如何注册你的损失函数
 
-English | [简体中文](README_zh-CN.md)
+[English](README.md) | 简体中文
 
-1. Create `your_criterion.py`.
-2. In `your_criterion.py`, inherit `BaseCriterion` to define your criterion. **You only need to define every loss
-   function that returns in `dict` format, and each key-value pair represents a loss item. The loss function name MUST
-   be in `loss_{name}` format.** The forward() is defined in the parent class `BaseCriterion` that calls the loss
-   functions we defined and gathers each loss function's output.
+1. 创建 `your_criterion.py`。
+2. 在 `your_criterion.py` 中，继承 `BaseCriterion` 来定义你的损失函数。*
+   *你只需要定义每一个子损失函数，它们均以字典形式返回，每一个键值对代表一个损失项。子损失函数的名称\*必须\*以 `loss_`
+   开头，即`loss_{name}`形式。** forward() 函数定义在父类 `BaseCriterion` 中，它会调用我们定义的子损失函数，并汇总它们的结果。
 
 ```python
 # your_criterion.py
@@ -23,7 +22,7 @@ class YourCriterion(BaseCriterion):
     def loss_name1(self, outputs, targets, **kwargs):
         losses = {}
         ...
-        losses['a'] = ... 
+        losses['a'] = ...
         return losses
 
     def loss_name2(self, outputs, targets, **kwargs):
@@ -32,19 +31,18 @@ class YourCriterion(BaseCriterion):
         losses['b'] = ...
         losses['c'] = ...
         return losses
-    
+
     def loss_name3(self, outputs, targets, **kwargs):
         losses = {}
         ...
-        losses['d'] = ... 
+        losses['d'] = ...
         return losses
 ```
 
-3. In `__init__.py`,
-    - Import your criterion.
-    - Register your criterion in `build_criterion()`, **where `{name1,name2,name3}` should be consistent with the loss
-      functions defined in `YourCriterion`, and `{a,b,c,d}` in `weight_dict` correspond to the output keys of loss
-      functions.**
+3. 在 `__init__.py` 中，
+    - 导入你的损失函数。
+    - 在 `build_criterion()` 中注册你的损失函数。**在这里，`{name1,name2,name3}` 应该和 `YourCriterion`
+      中定义的子损失函数的名称保持一致，`weight_dict` 中的 `{a,b,c,d}` 应该和子损失函数输出的各损失项的键值对应。**
 
 ```python
 # __init__.py
@@ -67,10 +65,10 @@ def build_criterion(args):
     ...
 ```
 
-4. When using your criterion, set `--criterion` to `your_criterion`. Note that `your_criterion` does not have to be
-   consistent with the criterion class name `YourCriterion`.
+4. 当使用你的损失函数时，把 `--criterion` 赋值为你的损失函数名称 `your_criterion`。注意 `your_criterion`
+   不需要和你的损失函数类名 `YourCriterion` 保持一致。
 
-We've provided a demo criterion code in `_demo_.py`.
+我们在 `_demo_.py` 中提供了一个损失函数样例。
 
 ```python
 # _demo_.py

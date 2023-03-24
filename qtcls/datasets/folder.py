@@ -11,6 +11,8 @@ import torch
 
 from ._base_ import BaseDataset
 
+__all__ = ['ImageFolder']
+
 IMG_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.ppm', '.bmp', '.pgm', '.tif', '.tiff', '.webp')
 
 
