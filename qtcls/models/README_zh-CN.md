@@ -3,7 +3,7 @@
 [English](README.md) | 简体中文
 
 1. 创建 `your_model.py`。
-2. 在 `your_model.py` 中，继承 `nn.Module` 来定义你的数据集。
+2. 在 `your_model.py` 中，继承 `nn.Module` 来定义你的模型。
 
 ```python
 # your_model.py

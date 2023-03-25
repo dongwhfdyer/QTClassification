@@ -72,6 +72,7 @@ python -m torch.distributed.launch --nproc_per_node=2 main.py \
   --output_dir ./runs/__tmp__
   
 # single-gpu
+CUDA_VISIBLE_DEVICES=0 \
 python main.py \
   --data_root ./data \
   --dataset cifar10 \
@@ -108,6 +109,7 @@ python -m torch.distributed.launch --nproc_per_node=2 main.py \
   --eval
   
 # single-gpu
+CUDA_VISIBLE_DEVICES=0 \
 python main.py \
   --data_root ./data \
   --dataset cifar10 \

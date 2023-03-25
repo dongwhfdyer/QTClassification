@@ -71,6 +71,7 @@ python -m torch.distributed.launch --nproc_per_node=2 main.py \
   --output_dir ./runs/__tmp__
   
 # 单gpu
+CUDA_VISIBLE_DEVICES=0 \
 python main.py \
   --data_root ./data \
   --dataset cifar10 \
@@ -107,6 +108,7 @@ python -m torch.distributed.launch --nproc_per_node=2 main.py \
   --eval
   
 # 单gpu
+CUDA_VISIBLE_DEVICES=0 \
 python main.py \
   --data_root ./data \
   --dataset cifar10 \
@@ -122,22 +124,22 @@ python main.py \
 
 **常用的命令行参数**
 
-|          命令行参数           |                                                                 描述                                                                  |       默认值        |
-|:------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|:----------------:|
-|      `--data_root`       |                                                             你的数据集存放的路径。                                                             |     `./data`     |
-|  `--dataset`<br />`-d`   |                数据集名称，在 [qtcls/datasets/\_\_init\_\_.py](qtcls/datasets/__init__.py) 里定义，如 `cifar10` 和 `imagenet1k`。                 |        /         |
-|      `--model_lib`       |                              模型库，模型都取自模型库。我们的基础模型库由 `torchvision` 扩展而来 (我们的默认模型库)，同时我们也支持 `timm` 模型库。                               | `torchvision-ex` |
+|        命令行参数        |                             描述                             |      默认值      |
+| :----------------------: | :----------------------------------------------------------: | :--------------: |
+|      `--data_root`       |                    你的数据集存放的路径。                    |     `./data`     |
+|  `--dataset`<br />`-d`   | 数据集名称，在 [qtcls/datasets/\_\_init\_\_.py](qtcls/datasets/__init__.py) 里定义，如 `cifar10` 和 `imagenet1k`。 |        /         |
+|      `--model_lib`       | 模型库，模型都取自模型库。我们的基础模型库由 `torchvision` 扩展而来 (我们的默认模型库)，同时我们也支持 `timm` 模型库。 | `torchvision-ex` |
 |   `--model`<br />`-m`    | 模型名称，在 [qtcls/models/\_\_init\_\_.py ](qtcls/models/__init__.py) 里定义，如 `resnet50` 和 `vit_b_16`。目前支持的模型名称在<a href="#模型库">模型库</a>中列出。 |        /         |
-|      `--criterion`       |                   损失函数名称，在 [qtcls/criterions/\_\_init\_\_.py](qtcls/criterions/__init__.py) 里定义。默认的损失函数会计算交叉熵损失。                    |    `default`     |
-|      `--optimizer`       |                     优化器名称，在 [qtcls/optimizers/\_\_init\_\_.py](qtcls/optimizers/__init__.py)，如 `sgd` 和 `adam`。                      |    `default`     |
-|      `--scheduler`       |                    学习率调整策略名称，在 [qtcls/schedulers/\_\_init\_\_.py](qtcls/schedulers/__init__.py) 中定义，如 `cosine`。                     |    `default`     |
-|      `--evaluator`       |               验证器名称，在 [qtcls/evaluators/\_\_init\_\_.py](qtcls/evaluators/__init__.py) 中定义。默认的验证器会计算准确率、召回率、精确率和f1分数。               |    `default`     |
-|   `--resume`<br />`-r`   |                                                            要从中恢复的检查点路径。                                                             |        /         |
-| `--output_dir`<br />`-o` |                                           输出目录，用来存放checkpoint文件（包含模型权重、优化器权重等）、日志文件和其他输出。                                           | `./runs/__tmp__` |
-|          `--lr`          |                                                                学习率。                                                                 |      `1e-4`      |
-|        `--epochs`        |                                                                  /                                                                  |       `50`       |
-| `--batch_size`<br />`-b` |                                                                  /                                                                  |       `8`        |
-|         `--eval`         |                                                              只验证，不训练。                                                               |     `False`      |
+|      `--criterion`       | 损失函数名称，在 [qtcls/criterions/\_\_init\_\_.py](qtcls/criterions/__init__.py) 里定义。默认的损失函数会计算交叉熵损失。 |    `default`     |
+|      `--optimizer`       | 优化器名称，在 [qtcls/optimizers/\_\_init\_\_.py](qtcls/optimizers/__init__.py)，如 `sgd` 和 `adam`。 |    `default`     |
+|      `--scheduler`       | 学习率调整策略名称，在 [qtcls/schedulers/\_\_init\_\_.py](qtcls/schedulers/__init__.py) 中定义，如 `cosine`。 |    `default`     |
+|      `--evaluator`       | 验证器名称，在 [qtcls/evaluators/\_\_init\_\_.py](qtcls/evaluators/__init__.py) 中定义。默认的验证器会计算准确率、召回率、精确率和f1分数。 |    `default`     |
+|   `--resume`<br />`-r`   |                   要从中恢复的检查点路径。                   |        /         |
+| `--output_dir`<br />`-o` | 输出目录，用来存放checkpoint文件（包含模型权重、优化器权重等）、日志文件和其他输出。 | `./runs/__tmp__` |
+|          `--lr`          |                           学习率。                           |      `1e-4`      |
+|        `--epochs`        |                              /                               |       `50`       |
+| `--batch_size`<br />`-b` |                              /                               |       `8`        |
+|         `--eval`         |                       只验证，不训练。                       |     `False`      |
 
 **如何放置你的数据集**
 
